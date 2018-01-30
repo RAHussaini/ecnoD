@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+<!--  *********************************catergory for show view*********************************** -->
+   <extension
+         point="org.eclipse.ui.views">
+      <category
+            name="ECNO Debugger"
+            id="dk.dtu.imm.se.debugger.ecno.viewCatId">
+      </category>
+      <!--  *********************************views*********************************** -->
+      <view
+            category="dk.dtu.imm.se.debugger.ecno.viewCatId"
+            class="dk.dtu.imm.se.debugger.ecno.views.DebugView"
+            icon="icons/debug.png"
+            id="dk.dtu.imm.se.debugger.ecno.views.DebugView"
+            name="Debug"
+            restorable="true">
+      </view>
+      <view
+            category="dk.dtu.imm.se.debugger.ecno.viewCatId"
+            class="dk.dtu.imm.se.debugger.ecno.views.BreakpointView"
+            icon="icons/breakpoint.png"
+            id="dk.dtu.imm.se.debugger.ecno.views.BreakpointView"
+            name="Breakpoints"
+            restorable="true">
+      </view>
+      <view
+            category="dk.dtu.imm.se.debugger.ecno.viewCatId"
+            class="dk.dtu.imm.se.debugger.ecno.views.TestView"
+            id="dk.dtu.imm.se.debugger.ecno.views.TestView"
+            name="Test View"
+            restorable="true">
+      </view>
+      <view
+            category="dk.dtu.imm.se.debugger.ecno.viewCatId"
+            class="dk.dtu.imm.se.debugger.ecno.views.SenderView"
+            id="dk.dtu.imm.se.debugger.ecno.views.SenderView"
+            name="Sender"
+            restorable="true">
+      </view>
+      <view
+            category="dk.dtu.imm.se.debugger.ecno.viewCatId"
+            class="dk.dtu.imm.se.debugger.ecno.views.ReseverView"
+            id="dk.dtu.imm.se.debugger.ecno.views.ReseverView"
+            name="Resiver"
+            restorable="true">
+      </view>
+   </extension>
+   
+   <!--  **********************************prospective********************************** -->
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension
+            targetID="org.eclipse.jdt.ui.JavaPerspective">
+         <view
+               id="dk.dtu.imm.se.debugger.ecno.views.DebugView"
+               minimized="false"
+               ratio="0.95f"
+               relationship="left"
+               relative="org.eclipse.ui.editorss"
+               visible="true">
+         </view>
+         <view
+               id="dk.dtu.imm.se.debugger.ecno.views.BreakpointView"
+               minimized="false"
+               ratio="0.5"
+               relationship="bottom"
+               relative="dk.dtu.imm.se.debugger.ecno.views.DebugView"
+               visible="true">
+         </view>
+         
+      </perspectiveExtension>
+   </extension>
+   <!--  ******************************************************************** -->
+   <extension
+         point="org.eclipse.help.contexts">
+      <contexts
+            file="contexts.xml">
+      </contexts>
+   </extension>
+   <!-- <extension
+         point="org.eclipse.ui.perspectives">
+      <perspective
+            class="dk.dtu.imm.se.debugger.ecno.perspectives.Perspective"
+            id="dk.dtu.imm.se.debugger.ecno.perspectives.Perspective"
+            name="ECNO Debugger Perspective">
+      </perspective>
+   </extension> -->
+   
+<!--  *******************************end plugin************************************* -->
+</plugin>

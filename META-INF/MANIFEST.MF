@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: ECNO Debugger
+Bundle-SymbolicName: dk.dtu.imm.se.debugger.ecno;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: dk.dtu.imm.se.debugger.ecno.Activator
+Bundle-Vendor: DTU Compute
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.osgi.services;bundle-version="3.6.0",
+ org.eclipse.zest.core;bundle-version="1.5.300",
+ org.eclipse.zest.layouts;bundle-version="1.1.300"
+Bundle-RequiredExecutionEnvironment: JavaSE-9
+Bundle-ActivationPolicy: lazy

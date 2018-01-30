@@ -1,0 +1,51 @@
+package dk.dtu.imm.se.debugger.ecno.models;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class NodeModelContentProvider {
+	 private List<MyConnection> connections;
+	    private List<ElementModel> nodes;
+
+	    public NodeModelContentProvider() {
+	        // Image here a fancy DB access
+	        // now create a few nodes
+	        nodes = new ArrayList<ElementModel>();
+	        ElementModel node = new ElementModel("1", "Hamburg");
+	        nodes.add(node);
+	        node = new ElementModel("2", "Frankfurt");
+	        nodes.add(node);
+	        node = new ElementModel("3", "Berlin");
+	        nodes.add(node);
+	        node = new ElementModel("4", "Munich");
+	        nodes.add(node);
+	        node = new ElementModel("5", "Eppelheim");
+	        nodes.add(node);
+	        node = new ElementModel("6", "Ahrensboek");
+	        nodes.add(node);
+
+	        connections = new ArrayList<MyConnection>();
+	        MyConnection connect = new MyConnection("1", "1", nodes.get(0),
+	                nodes.get(1));
+	        connections.add(connect);
+	        connect = new MyConnection("2", "2", nodes.get(0), nodes.get(4));
+	        connections.add(connect);
+	        connect = new MyConnection("3", "3", nodes.get(2), nodes.get(1));
+	        connections.add(connect);
+	        connect = new MyConnection("4", "3", nodes.get(1), nodes.get(3));
+	        connections.add(connect);
+
+	        // Because we are lasy we save the info about the connections in the
+	        // nodes
+
+	        for (MyConnection connection : connections) {
+	            connection.getSource().getConnectedTo()
+	                    .add(connection.getDestination());
+	        }
+	    }
+
+	    public List<ElementModel> getNodes() {
+	        return nodes;
+	    }
+
+}
