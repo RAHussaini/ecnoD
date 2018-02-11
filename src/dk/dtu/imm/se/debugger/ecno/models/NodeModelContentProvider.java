@@ -4,24 +4,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NodeModelContentProvider {
-	 private List<MyConnection> connections;
-	    private List<ElementModel> nodes;
+	  private List<MyConnection> connections;
+	    private List<MyNode> nodes;
 
 	    public NodeModelContentProvider() {
 	        // Image here a fancy DB access
 	        // now create a few nodes
-	        nodes = new ArrayList<ElementModel>();
-	        ElementModel node = new ElementModel("1", "Hamburg");
+	        nodes = new ArrayList<MyNode>();
+	        MyNode node = new MyNode("1", "Hamburg");
 	        nodes.add(node);
-	        node = new ElementModel("2", "Frankfurt");
+	        node = new MyNode("2", "Frankfurt");
 	        nodes.add(node);
-	        node = new ElementModel("3", "Berlin");
+	        node = new MyNode("3", "Berlin");
 	        nodes.add(node);
-	        node = new ElementModel("4", "Munich");
+	        node = new MyNode("4", "Munich");
 	        nodes.add(node);
-	        node = new ElementModel("5", "Eppelheim");
+	        node = new MyNode("5", "Eppelheim");
 	        nodes.add(node);
-	        node = new ElementModel("6", "Ahrensboek");
+	        node = new MyNode("6", "Ahrensboek");
 	        nodes.add(node);
 
 	        connections = new ArrayList<MyConnection>();
@@ -44,7 +44,7 @@ public class NodeModelContentProvider {
 	        }
 	    }
 
-	    public List<ElementModel> getNodes() {
+	    public List<MyNode> getNodes() {
 	        return nodes;
 	    }
 

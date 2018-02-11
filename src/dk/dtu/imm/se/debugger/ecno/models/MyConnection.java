@@ -3,10 +3,10 @@ package dk.dtu.imm.se.debugger.ecno.models;
 public class MyConnection {
 	 final String id;
 	    final String label;
-	    final ElementModel source;
-	    final ElementModel destination;
+	    final MyNode source;
+	    final MyNode destination;
 
-	    public MyConnection(String id, String label, ElementModel source, ElementModel destination) {
+	    public MyConnection(String id, String label, MyNode source, MyNode destination) {
 	        this.id = id;
 	        this.label = label;
 	        this.source = source;
@@ -17,10 +17,10 @@ public class MyConnection {
 	        return label;
 	    }
 
-	    public ElementModel getSource() {
+	    public MyNode getSource() {
 	        return source;
 	    }
-	    public ElementModel getDestination() {
+	    public MyNode getDestination() {
 	        return destination;
 	    }
 
