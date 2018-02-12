@@ -23,6 +23,8 @@ import dk.dtu.imm.se.debugger.ecno.models.NodeModelContentProvider;
 import dk.dtu.imm.se.debugger.ecno.models.ObjectModel;
 import dk.dtu.imm.se.debugger.ecno.providers.ECNODebuggerContentProvider;
 import dk.dtu.imm.se.debugger.ecno.providers.ECNODebuggerLabelProvider;
+import dk.dtu.imm.se.debugger.views.LayoutType;
+
 
 public class DebugView extends ViewPart implements IZoomableWorkbenchPart {
 	
@@ -50,10 +52,11 @@ public class DebugView extends ViewPart implements IZoomableWorkbenchPart {
 		gViewer.setNodeStyle(ZestStyles.NODES_CACHE_LABEL);
 		gViewer.setConnectionStyle(ZestStyles.CONNECTIONS_DIRECTED);
 		gViewer.setUseHashlookup(true);
+		gViewer.setInput(this.getElements());
 		//gViewer.setInput(this.elements); // set the initial input of the viewer
-		NodeModelContentProvider model = new NodeModelContentProvider();
-		gViewer.setInput(model.getNodes());
-		
+//		NodeModelContentProvider model = new NodeModelContentProvider();
+//		gViewer.setInput(model.getNodes());
+//		
 //		NodeModelContentProvider model = new NodeModelContentProvider();
 //		gViewer.setInput(model.getNodes());
 		LayoutAlgorithm layout = setLayout();
@@ -69,6 +72,11 @@ public class DebugView extends ViewPart implements IZoomableWorkbenchPart {
 //		Text text = new Text(parent, SWT.BORDER);
 //		text.setText(ID);
 
+	}
+	
+	public List <ObjectModel> getElements(){
+		
+		return elements;
 	}
 
 //	public ObjectModel getInitialInput() {
@@ -111,4 +119,11 @@ public class DebugView extends ViewPart implements IZoomableWorkbenchPart {
 		return gViewer;
 	}
 
-}
+	public void applyLayout(LayoutType layoutType) {
+		// TODO Auto-generated method stub
+		
+		
+	}
+
+
+} //*******class end**********

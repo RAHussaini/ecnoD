@@ -1,7 +1,14 @@
 package dk.dtu.imm.se.debugger.ecno;
 
+import org.eclipse.core.commands.Command;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.commands.ICommandService;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.eclipse.ui.progress.UIJob;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -28,6 +35,25 @@ public class Activator extends AbstractUIPlugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
+		
+		UIJob job = new UIJob("workaround") { // Create a new instance of the receiver with the supplied name. 
+			//The display used will be the one from the workbench if this is available. UIJobs with this constructor will determine their display at runtime.
+			 
+		    public IStatus runInUIThread(IProgressMonitor monitor) { // run the job in the UI thread
+		 
+		        ICommandService commandService = (ICommandService) PlatformUI
+		            .getWorkbench().getActiveWorkbenchWindow().getService(
+		                ICommandService.class);
+		       
+		        Command command = commandService.getCommand("dk.dtu.imm.se.debugger.ecno.commands.ChangeLayout");
+		        command.isEnabled();
+		        return new Status(IStatus.OK,
+		            PLUGIN_ID,
+		            "Init commands workaround performed succesfully");
+		    }
+		 
+		};
+		job.schedule();
 	}
 
 	/*

@@ -113,5 +113,7 @@ public abstract class ObjectModel implements Shapeable, IWorkbenchAdapter,IAdapt
 	public String toString() {
 		return getName() + ";isHighlighted: " + isHighlighted() + ";shape:" + shape;
 	}
+	
+	
 
 }

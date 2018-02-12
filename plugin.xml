@@ -25,27 +25,6 @@
             name="Breakpoints"
             restorable="true">
       </view>
-      <view
-            category="dk.dtu.imm.se.debugger.ecno.viewCatId"
-            class="dk.dtu.imm.se.debugger.ecno.views.TestView"
-            id="dk.dtu.imm.se.debugger.ecno.views.TestView"
-            name="Test View"
-            restorable="true">
-      </view>
-      <view
-            category="dk.dtu.imm.se.debugger.ecno.viewCatId"
-            class="dk.dtu.imm.se.debugger.ecno.views.SenderView"
-            id="dk.dtu.imm.se.debugger.ecno.views.SenderView"
-            name="Sender"
-            restorable="true">
-      </view>
-      <view
-            category="dk.dtu.imm.se.debugger.ecno.viewCatId"
-            class="dk.dtu.imm.se.debugger.ecno.views.ReseverView"
-            id="dk.dtu.imm.se.debugger.ecno.views.ReseverView"
-            name="Resiver"
-            restorable="true">
-      </view>
    </extension>
    
    <!--  **********************************prospective********************************** -->
@@ -78,6 +57,14 @@
       <contexts
             file="contexts.xml">
       </contexts>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            defaultHandler="dk.dtu.imm.se.debugger.ecno.commands.ChangeLayout"
+            id="dk.dtu.imm.se.debugger.ecno.commands.ChangeLayout"
+            name="Change Layout">
+      </command>
    </extension>
    <!-- <extension
          point="org.eclipse.ui.perspectives">
