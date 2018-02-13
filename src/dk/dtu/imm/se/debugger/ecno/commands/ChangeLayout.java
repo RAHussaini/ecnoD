@@ -8,11 +8,13 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.commands.ICommandService;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.eclipse.ui.handlers.RadioState;
 
 import dk.dtu.imm.se.debugger.ecno.views.DebugView;
-import dk.dtu.imm.se.debugger.views.LayoutType;
+import dk.dtu.imm.se.debugger.ecno.views.LayoutType;
+
 
 /**
  * @author s150962
@@ -44,7 +46,10 @@ public class ChangeLayout extends AbstractHandler {
 			((DebugView) viewPart).applyLayout(layoutType);
 			
 		}
+		
 		}
+		ICommandService service = (ICommandService)HandlerUtil.getActiveWorkbenchWindowChecked(event).getService(ICommandService.class);
+		service.refreshElements(event.getCommand().getId(), null);
 		return null;
 	}
 

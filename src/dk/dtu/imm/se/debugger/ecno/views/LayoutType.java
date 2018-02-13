@@ -1,4 +1,4 @@
-package dk.dtu.imm.se.debugger.views;
+package dk.dtu.imm.se.debugger.ecno.views;
 
 import org.eclipse.zest.layouts.LayoutAlgorithm;
 

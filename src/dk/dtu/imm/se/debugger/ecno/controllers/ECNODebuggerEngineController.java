@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
+import dk.dtu.imm.se.debugger.ecno.models.ObjectModel;
+import dk.dtu.imm.se.ecno.core.IElementType;
 import dk.dtu.imm.se.ecno.engine.ECNODebugger;
 import dk.dtu.imm.se.ecno.engine.ExecutionEngine;
 import dk.dtu.imm.se.ecno.engine.ExecutionEngine.InvalidChoiceType;
@@ -15,7 +17,7 @@ public class ECNODebuggerEngineController implements IECNODebuggerEngineControll
 
 	private static ECNODebuggerEngineController instance;
 
-	public static Object getInstance() {
+	public static IECNODebuggerEngineController getInstance() {
 		// TODO Auto-generated method stub		
 		if (instance == null) {
 			return (instance = new ECNODebuggerEngineController());
@@ -28,6 +30,11 @@ public class ECNODebuggerEngineController implements IECNODebuggerEngineControll
 	private CountDownLatch latch = null;
 	private DebuggerState state = DebuggerState.INITIALIZED; //  intial state
 	private volatile List<IDebuggerStateListener> debuggerStateListeners = new ArrayList<>();
+	
+	private List<IBreakpoint> breakpoints = new ArrayList<>();
+	private List<IGraphItemListener> elementListener = new ArrayList<>();
+	private List<ObjectModel> encounteredElements = new ArrayList<>();
+	private List <ObjectModel> addedElements = new ArrayList<>();
 	
 	//******************************************************
 	
@@ -49,9 +56,10 @@ public class ECNODebuggerEngineController implements IECNODebuggerEngineControll
 		this.state  = state;
 		for (IDebuggerStateListener l : this.debuggerStateListeners) {
 			l.stateChanged(state);
-		}
-		
+		}		
 	}
+	
+	
 
 	private void destroy() {
 		// TODO Auto-generated method stub
@@ -86,6 +94,7 @@ public class ECNODebuggerEngineController implements IECNODebuggerEngineControll
 	public void addElement(Object element) {
 		// TODO Auto-generated method stub
 		
+		
 	}
 
 	@Override
@@ -103,6 +112,47 @@ public class ECNODebuggerEngineController implements IECNODebuggerEngineControll
 	@Override
 	public void dispose() {
 		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	@Override
+	public boolean isElementType(Object element, IElementType elementType) {
+		// TODO Auto-generated method stub
+		IElementType typeToMatch = engine.getElementType(element);
+		if(typeToMatch == null) return false;
+		if(elementType == null) return false;
+		if(typeToMatch.getName().equals(elementType.getName())) return true;
+		return false;
+	}
+
+
+
+	@Override
+	public void addBreakpoint(IBreakpoint breakpoint) {
+		// TODO Auto-generated method stub
+		this.breakpoints.add(breakpoint);
+		
+	}
+
+
+
+	@Override
+	public void continueFromBreakpoint() {
+		// TODO Auto-generated method stub
+		latch.countDown();
+		
+	}
+
+
+
+	@Override
+	public void addElementListener(IGraphItemListener listener) {
+		// TODO Auto-generated method stub
+		this.elementListener.add(listener);
+		for (ObjectModel o: this.encounteredElements)listener.elementEncountered(o);
+		for (ObjectModel o: this.addedElements) listener.elementAdded(o);
 		
 	}
 
