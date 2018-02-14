@@ -5,69 +5,103 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 
+import org.eclipse.ui.model.IWorkbenchAdapter;
+import org.eclipse.ui.views.properties.IPropertySource;
+
+import dk.dtu.imm.se.debugger.ecno.properties.ElementProperties;
 import dk.dtu.imm.se.ecno.core.IElementType;
 
 public class ElementModel extends ObjectModel {
 	
-	private static Hashtable<String, Integer> counter = new Hashtable<>();
+	private static Hashtable<String, Integer> counters = new Hashtable<>();
 	private final List<ObjectModel> references;
 	private IElementType elementType;
 	
 	public ElementModel(Object element, IElementType elementType){
-		this.references = new ArrayList();
+		this.references = new ArrayList<>();
 		this.elementType = elementType;
 		
-		try {
-			Method nameMethod = element.getClass().getMethod("getName");
-			if(nameMethod != null)
-				this.name = nameMethod.invoke(element).toString();
-			
-		}catch (Exception e){
-			System.err.println("no getName method found for :" + element.getClass().getSimpleName());
-			
+		try{
+			Method nameMeth = element.getClass().getMethod("getName");
+			if(nameMeth != null)
+				this.name = nameMeth.invoke(element).toString();
+		}catch(Exception e){
+			System.err.println("no getName method found for: " + element.getClass().getSimpleName());
 		}
-		if (this.name == null) {
+		if(this.name == null){
 			this.name = getDefaultElementName(element);
 		}
-		
-		this.name += " : " + (elementType != null ? elementType.getName() : element.getClass().getSimpleName());
+		this.name += ":" + (elementType != null ? elementType.getName() : element.getClass().getSimpleName());
 		this.node = element;
-		
-		
-		
 	}
 
-private String getDefaultElementName(Object element) {
-		// TODO Auto-generated method stub
-	String name = element.getClass().getSimpleName();
-	int no = 0;
-	if(counter.contains(name)) {
-		no = counter.get(name)+1;
-	}
-	counter.put(name, no);
+	private String getDefaultElementName(Object element){
+		String name = element.getClass().getSimpleName();
+		int no = 0;
+		if(counters.containsKey(name)){
+			no = counters.get(name)+1;
+		}
+		counters.put(name, no);
 		return name + no;
 	}
 
-//		public ElementModel(String string) {
-//		// TODO Auto-generated constructor stub
-//	}
+	//	public void addReference(Object reference){
+	//		if(!references.contains(reference)){
+	//			this.references.add(reference);
+	//			//			reference.addReference(this);
+	//		}
+	//	}
+	private final List<Object> refs = new ArrayList<>();
+	private final List<ObjectModel> items = new ArrayList<>();
+	public void setReferences(List<Object> references, List<ObjectModel> items){
+		this.refs.clear();
+		this.items.clear();
+		if(references != null)this.refs.addAll(references);
+		if(items != null)this.items.addAll(items);
+	}
 
-		public Object[] getReferences() {
-			// TODO Auto-generated method stub
-			return null;
+	public Object[] getReferences(){
+		if(this.references.size() != this.refs.size()){
+			List<ObjectModel> newReferences = new ArrayList<>();
+			if(this.items == null) return new Object[0];
+			for(ObjectModel el : this.items){
+				if(this.refs.contains(el.getNode())){
+					newReferences.add(el);
+				}
+			}
+			this.references.clear();
+			this.references.addAll(newReferences);
 		}
+		return this.references.toArray();
+	}
 
-		public String getName() {
-			// TODO Auto-generated method stub
-			return null;
+	public boolean hasReference(Object element){
+		for(ObjectModel r : references){
+			if(r.getNode().equals(element)) return true;
 		}
+		for(Object o : this.refs){
+			if(o.equals(element)) return true;
+		}
+		return false;
+	}
 
-		@Override
-		public <T> T getAdapter(Class<T> adapter) {
-			// TODO Auto-generated method stub
-			return null;
+	@SuppressWarnings("unchecked")
+	@Override
+	public <T> T getAdapter(Class<T> adapter) {
+		if (adapter == IWorkbenchAdapter.class)
+			return (T) this;
+		if(adapter == IPropertySource.class){
+			return (T) new ElementProperties(this);
 		}
+		return null;
+	}
 	
+	
+//	public boolean isHighlighted() {
+//		if(){
+//			System.out.println("TESTed hight light"); //rus
+//		}
+//		return highlight;}
 		
 
 }
