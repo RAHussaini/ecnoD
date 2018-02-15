@@ -48,7 +48,7 @@ import dk.dtu.imm.se.debugger.ecno.controllers.IViewPartListener;
 import dk.dtu.imm.se.debugger.ecno.models.ElementModel;
 import dk.dtu.imm.se.debugger.ecno.models.EventModel;
 import dk.dtu.imm.se.debugger.ecno.models.InteractionModel;
-import dk.dtu.imm.se.debugger.ecno.models.NodeModelContentProvider;
+
 import dk.dtu.imm.se.debugger.ecno.models.ObjectModel;
 import dk.dtu.imm.se.debugger.ecno.providers.ECNODebuggerContentProvider;
 import dk.dtu.imm.se.debugger.ecno.providers.ECNODebuggerLabelProvider;
@@ -100,7 +100,7 @@ IComboListener<InteractionModel, ComboExt<InteractionModel>> {
 		// here we create the view		
 		gViewer = new GraphViewer(parent, SWT.BORDER);
 		gViewer.setContentProvider(new ECNODebuggerContentProvider()); //  you need to provide the viewer with information on how to transform your domain object into an item in the UI
-		gViewer.setLabelProvider(new ECNODebuggerLabelProvider());
+		gViewer.setLabelProvider(new ECNODebuggerLabelProvider(gViewer));
 		gViewer.setNodeStyle(ZestStyles.NODES_CACHE_LABEL);
 		gViewer.setConnectionStyle(ZestStyles.CONNECTIONS_DIRECTED);
 		gViewer.setUseHashlookup(true);
@@ -144,11 +144,15 @@ IComboListener<InteractionModel, ComboExt<InteractionModel>> {
 
 	} //**********end createPartControl*******************
 	
-	
-	public static void addViewPartListerner(IViewPartListener<DebugView> part) {
-		
-		if(!viewPartListeners.contains(part))viewPartListeners.add(part);		
+	public static void addViewPartListener(IViewPartListener<DebugView> part) {
+		// TODO Auto-generated method stub
+		if(!viewPartListeners.contains(part))viewPartListeners.add(part);
 	}
+
+//	public static void addViewPartListerner(IViewPartListener<DebugView> part) {
+//		
+//		if(!viewPartListeners.contains(part))viewPartListeners.add(part);		
+//	}
 	
 	public static void removeViewPartListener(IViewPartListener<DebugView> part) {
 		viewPartListeners.remove(part);
@@ -181,7 +185,7 @@ IComboListener<InteractionModel, ComboExt<InteractionModel>> {
 	}
 	
 
-	private void showEncounteredElements(boolean show) {
+	public void showEncounteredElements(boolean show) {
 	// TODO Auto-generated method stub
 		if(showEncounteredElements =show) {
 			this.gViewer.removeFilter(filterEncounteredElements);
@@ -442,6 +446,9 @@ IComboListener<InteractionModel, ComboExt<InteractionModel>> {
 		
 		
 	}
+
+	
+	
 	
 
 

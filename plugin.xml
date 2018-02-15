@@ -25,6 +25,22 @@
             name="Breakpoints"
             restorable="true">
       </view>
+      <view
+            category="dk.dtu.imm.se.debugger.ecno.viewCatId"
+            class="dk.dtu.imm.se.debugger.ecno.views.FilterView"
+            icon="icons/sample.png"
+            id="dk.dtu.imm.se.debugger.ecno.views.FilterView"
+            name="Filter"
+            restorable="true">
+      </view>
+      <view
+            category="dk.dtu.imm.se.debugger.ecno.viewCatId"
+            class="dk.dtu.imm.se.debugger.ecno.views.OverviewView"
+            icon="icons/sample.png"
+            id="dk.dtu.imm.se.debugger.ecno.views.OverviewView"
+            name="Overview"
+            restorable="true">
+      </view>
    </extension>
    
    <!--  **********************************prospective********************************** -->
@@ -64,7 +80,85 @@
             defaultHandler="dk.dtu.imm.se.debugger.ecno.commands.ChangeLayout"
             id="dk.dtu.imm.se.debugger.ecno.commands.ChangeLayout"
             name="Change Layout">
+         <commandParameter
+               id="org.eclipse.ui.commands.radioStateParameter"
+               name="Unique name2"
+               optional="true">
+         </commandParameter>
+         <state
+               class="org.eclipse.ui.handlers.RadioState:TREE"
+               id="org.eclipse.ui.commands.RadioState">
+         </state>
+         <state
+               id="org.eclipse.ui.commands.radioState">
+            <class
+                  class="org.eclipse.ui.handlers.RadioState">
+            </class>
+         </state>
       </command>
+      <command
+            defaultHandler="dk.dtu.imm.se.debugger.ecno.commands.ShowAddedElements"
+            id="dk.dtu.imm.se.debugger.ecno.commands.ShowAddedElements"
+            name="Show Added Elements">
+      </command>
+      <command
+            defaultHandler="dk.dtu.imm.se.debugger.ecno.commands.ShowEncounteredElements"
+            id="dk.dtu.imm.se.debugger.ecno.commands.ShowEncounteredElements"
+            name="Show Encountered Elements">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            allPopups="false"
+            locationURI="popup:dk.dtu.imm.se.debugger.ecno.views.Menu">
+         <menu
+               label="Select Layout">
+            <command
+                  commandId="dk.dtu.imm.se.debugger.ecno.commands.changeLayout"
+                  id="dk.dtu.imm.se.debugger.ecno.commands.changeLayout.spring"
+                  label="Spring Layout"
+                  style="radio">
+            </command>
+            <command
+                  commandId="dk.dtu.imm.se.debugger.ecno.commands.changeLayout"
+                  id="dk.dtu.imm.se.debugger.ecno.commands.changeLayout.grid"
+                  label="Grid  Layout"
+                  style="radio">
+            </command>
+            <command
+                  commandId="dk.dtu.imm.se.debugger.ecno.commands.changeLayout"
+                  id="dk.dtu.imm.se.debugger.ecno.commands.changeLayout.horizontalTree"
+                  label="Horizontal Tree"
+                  style="radio">
+            </command>
+            <command
+                  commandId="dk.dtu.imm.se.debugger.ecno.commands.changeLayout"
+                  id="dk.dtu.imm.se.debugger.ecno.commands.changeLayout.radial"
+                  label="Radial Layout"
+                  style="radio">
+            </command>
+            <command
+                  commandId="dk.dtu.imm.se.debugger.ecno.commands.changeLayout"
+                  id="dk.dtu.imm.se.debugger.ecno.commands.changeLayout.tree"
+                  label="Tree Layout"
+                  style="radio">
+            </command>
+            <menu
+                  label="show">
+               <command
+                     commandId="dk.dtu.imm.se.debugger.ecno.commands.showEncounteredElements"
+                     label="Show Encountered Elements"
+                     style="toggle">
+               </command>
+               <command
+                     commandId="dk.dtu.imm.se.debugger.ecno.commands.showAddedElements"
+                     label="Show Eadded Elements"
+                     style="toggle">
+               </command>
+            </menu>
+         </menu>
+      </menuContribution>
    </extension>
    <!-- <extension
          point="org.eclipse.ui.perspectives">

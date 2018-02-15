@@ -1,10 +1,12 @@
+/**
+ * 
+ */
 package dk.dtu.imm.se.debugger.ecno.models;
 import static dk.dtu.imm.se.debugger.ecno.utils.CustomWidgetUtil.applyGridLayout;
 import static dk.dtu.imm.se.debugger.ecno.utils.CustomWidgetUtil.applyGridLayoutData;
 
-
-import java.util.Collection;
-
+import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -14,38 +16,37 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 
 import dk.dtu.imm.se.debugger.ecno.controllers.ECNODebuggerEngineController;
-import dk.dtu.imm.se.debugger.ecno.controllers.IBreakpoint;
 import dk.dtu.imm.se.debugger.ecno.controllers.IRemoveControlListener;
 import dk.dtu.imm.se.ecno.core.IElementType;
 import dk.dtu.imm.se.ecno.core.IEventType;
 import dk.dtu.imm.se.ecno.runtime.Event;
-import dk.dtu.imm.se.ecno.runtime.Interaction;
-import dk.dtu.imm.se.ecno.runtime.Link;
 
-public class BreakpointModel implements IBreakpoint{
+/**
+ * @author s150962
+ *
+ */
+public class FilterModel extends ViewerFilter {
 
+	private Button removeBtn;
 	private IEventType eventType;
 	private IElementType elementType;
-	private String operator;
-	private Button removeBtn;
-		private Group group;
+	private Group group;
 	
-		
-	public BreakpointModel(IRemoveControlListener removeListener, Composite parent, IEventType eventType, IElementType elementType, String operator) {
-	this.eventType = eventType;
-	this.elementType = elementType;
-	this.operator = operator;
-	init(parent, removeListener);
-		
+	public FilterModel(IRemoveControlListener removeListener,
+			Composite parent, 
+			IEventType eventType, 
+			IElementType elementType){
+		this.eventType = eventType;
+		this.elementType = elementType;
+		init(parent, removeListener);
 	}
-
-	public void init(Composite parent, IRemoveControlListener removeListener) {
-		// TODO Auto-generated method stub
+	
+	public void init(Composite parent, final IRemoveControlListener removeListener){
 		group = new Group(parent, SWT.ALL);
 		//		group.setSize(500, 350);
 		String groupName = "";
 		groupName += eventType == null ? "" : eventType.getName() + " ";
-		groupName += (eventType != null && elementType != null) ? operator + " " : "";
+		groupName += (eventType != null && elementType != null) ? "OR " + " " : "";
 		groupName += elementType == null ? "" : elementType.getName();
 		group.setText(groupName);
 		applyGridLayout(group, 2);
@@ -68,7 +69,7 @@ public class BreakpointModel implements IBreakpoint{
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				removeListener.removeControl(BreakpointModel.this);
+				removeListener.removeControl(FilterModel.this);
 				dispose();
 //				System.out.println("dispose breakpoint");
 			}
@@ -78,71 +79,37 @@ public class BreakpointModel implements IBreakpoint{
 			}
 		});
 		applyGridLayoutData(removeBtn, 2);
-		
 	}
-
-	protected void dispose() {
-		// TODO Auto-generated method stub
+	
+	public void dispose(){
 		group.dispose();
-		
+
 	}
 
 	@Override
-	public boolean isBreakpoint(Interaction interaction) {
-		// TODO Auto-generated method stub
-		
-		boolean checkEventType = false;
-		boolean checkElementType = false;
+	public boolean select(Viewer viewer, Object parentElement, Object element) {
 
 		boolean hasElementType = false;
 		boolean hasEventType = false;
 		if(eventType != null) {
-			checkEventType = true;
-			for(Link link : interaction.getLinks()){
-				Collection<Event> events = interaction.getEvents(link);
-				for(Event e : events){
-					if(e.getType().getName().equals(eventType.getName())){
-						hasEventType = true;
-						break;
-					}
+			if(element instanceof EventModel){
+				EventModel eventViewModel = (EventModel) element;
+				Event event = (Event) eventViewModel.getNode();
+				if(event.getType().getName().equals(eventType.getName())){
+					hasEventType = true;
 				}
-				if(hasEventType) break;
 			}
-		}
-		if(interaction.getTriggerEvent().getType().getName().equalsIgnoreCase(eventType.getName())){
-			hasEventType = true;
 		}
 		if(elementType != null){
-			checkElementType = true;
-			for(Object o : interaction.getElements()){
-				if(ECNODebuggerEngineController.getInstance().isElementType(o, elementType)){
+			if(element instanceof ElementModel){
+				ElementModel elementViewModel = (ElementModel) element;
+				if(ECNODebuggerEngineController.getInstance().isElementType(elementViewModel.getNode(), elementType)){
 					hasElementType = true;
-					break;
 				}
 			}
-			if(ECNODebuggerEngineController.getInstance().isElementType(interaction.getTriggerElement(), elementType)){
-				hasElementType = true;
-			}
 		}
-		
 
-		if(checkElementType && checkEventType){
-			if(operator.equalsIgnoreCase("and"))
-				return hasElementType && hasEventType;
-			if(operator.equalsIgnoreCase("or"))
-				return hasElementType || hasEventType; 
-		}
-		if(checkElementType && !checkEventType){
-			return hasElementType;
-		}
-		if(checkEventType && !checkElementType){
-			return hasEventType;
-		}
-		return false;
+		return !(hasElementType || hasEventType); // filter needs to return false for element that should not be shown
 	}
-
-	public IBreakpoint getDebugController(){
-		return this;
-	}
-
+	
 }

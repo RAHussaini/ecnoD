@@ -30,14 +30,17 @@ public interface IECNODebuggerEngineController {
 	void removeBreakpoint(IBreakpoint breakpoint);
 	void removeEventTypeListener(IEventTypeListener listener);
 	void removeElementTypeListener(IElementTypeListener listener);	
+	
 	void removeInteractionListener(IInteractionListener listener);
-	void removeBreakpointListener(IBreakpointListener listener);	
+	void removeBreakpointListener(IBreakpointListener listener);
+	
 	void removeElementListener(IGraphItemListener listener);
 	void removeDebuggerStateListener(IDebuggerStateListener listener);
 	
 	List<IEventType> getEventTypes();
 	IEventType[] getEventTypes(Object element);
 	List<IElementType> getElementTypes();
+	
 	List<ObjectModel> getElements();
 	List<Interaction> getInteractions(Object element, IEventType eventType);
 	

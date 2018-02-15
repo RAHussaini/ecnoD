@@ -1,7 +1,5 @@
 package dk.dtu.imm.se.debugger.ecno.models;
-import static dk.dtu.imm.se.debugger.ecno.utils.CustomWidgetUtil.applyGridLayout;
 import static dk.dtu.imm.se.debugger.ecno.utils.CustomWidgetUtil.applyGridLayoutData;
-
 
 import java.util.Collection;
 
@@ -13,6 +11,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 
+import static dk.dtu.imm.se.debugger.ecno.utils.CustomWidgetUtil.applyGridLayout;
+
 import dk.dtu.imm.se.debugger.ecno.controllers.ECNODebuggerEngineController;
 import dk.dtu.imm.se.debugger.ecno.controllers.IBreakpoint;
 import dk.dtu.imm.se.debugger.ecno.controllers.IRemoveControlListener;
@@ -22,25 +22,32 @@ import dk.dtu.imm.se.ecno.runtime.Event;
 import dk.dtu.imm.se.ecno.runtime.Interaction;
 import dk.dtu.imm.se.ecno.runtime.Link;
 
-public class BreakpointModel implements IBreakpoint{
+public class Break implements IBreakpoint {
 
+	private Button removeBtn;
 	private IEventType eventType;
 	private IElementType elementType;
 	private String operator;
-	private Button removeBtn;
-		private Group group;
-	
-		
-	public BreakpointModel(IRemoveControlListener removeListener, Composite parent, IEventType eventType, IElementType elementType, String operator) {
-	this.eventType = eventType;
-	this.elementType = elementType;
-	this.operator = operator;
-	init(parent, removeListener);
-		
+	private Group group;
+
+	public Break(IRemoveControlListener removeListener,
+			Composite parent, 
+			IEventType eventType, 
+			IElementType elementType, 
+			String operator){
+		this.eventType = eventType;
+		this.elementType = elementType;
+		this.operator = operator;
+		init(parent, removeListener);
+
 	}
 
-	public void init(Composite parent, IRemoveControlListener removeListener) {
-		// TODO Auto-generated method stub
+	public void dispose(){
+		group.dispose();
+
+	}
+
+	public void init(Composite parent, final IRemoveControlListener removeListener){
 		group = new Group(parent, SWT.ALL);
 		//		group.setSize(500, 350);
 		String groupName = "";
@@ -68,7 +75,7 @@ public class BreakpointModel implements IBreakpoint{
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				removeListener.removeControl(BreakpointModel.this);
+				removeListener.removeControl(Break.this);
 				dispose();
 //				System.out.println("dispose breakpoint");
 			}
@@ -78,19 +85,10 @@ public class BreakpointModel implements IBreakpoint{
 			}
 		});
 		applyGridLayoutData(removeBtn, 2);
-		
-	}
-
-	protected void dispose() {
-		// TODO Auto-generated method stub
-		group.dispose();
-		
 	}
 
 	@Override
 	public boolean isBreakpoint(Interaction interaction) {
-		// TODO Auto-generated method stub
-		
 		boolean checkEventType = false;
 		boolean checkElementType = false;
 
@@ -144,5 +142,6 @@ public class BreakpointModel implements IBreakpoint{
 	public IBreakpoint getDebugController(){
 		return this;
 	}
+
 
 }
